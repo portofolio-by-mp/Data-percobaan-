@@ -487,6 +487,10 @@ footer p{font-size:0.78rem;color:var(--muted);font-weight:600}
   .hero-name{margin-bottom:1.2rem}
   .section-header{margin-bottom:1.8rem}
 }
+@media(max-width:640px){
+  /* fallback: pastikan konten tetap tampil di HP walau animasi fade-in gagal trigger */
+  .fade-in{opacity:1;transform:none;transition:none}
+}
 @media(prefers-reduced-motion:reduce){
   .avail-dot,.avail-badge,.nav-logo-dot,.hero-name{animation:none}
   .fade-in{opacity:1;transform:none;transition:none}
@@ -500,7 +504,7 @@ footer p{font-size:0.78rem;color:var(--muted);font-weight:600}
 <div class="cursor-glow" id="cursorGlow"></div>
 
 <nav id="navbar">
-  <a href="#" class="nav-logo"><span class="nav-logo-dot"></span>IoT Engineer</a>
+  <a href="#" class="nav-logo"><span class="nav-logo-dot"></span>Portofolio</a>
   <ul class="nav-links">
     <li><a href="#skills">Skills</a></li>
     <li><a href="#projects">Projects</a></li>
@@ -540,7 +544,7 @@ footer p{font-size:0.78rem;color:var(--muted);font-weight:600}
       <div class="skill-list"><span class="skill-tag">ESP32</span><span class="skill-tag">Arduino Uno</span><span class="skill-tag">Raspberry Pi</span><span class="skill-tag">Jetson Nano</span></div>
     </div>
     <div class="skill-card fade-in">
-      <span class="skill-card-icon">🛠️</span>
+      <span class="skill-card-icon">💻</span>
       <p class="skill-card-title">Tools</p>
       <div class="skill-list"><span class="skill-tag">GitHub</span><span class="skill-tag">Serveo.net</span><span class="skill-tag">VibeCoding</span><span class="skill-tag">Arduino IDE</span></div>
     </div>
@@ -567,8 +571,8 @@ footer p{font-size:0.78rem;color:var(--muted);font-weight:600}
     <div class="project-card fade-in" data-project="1">
       <div class="project-num">02</div>
       <div class="project-content">
-        <p class="project-name">Smart Miniatur Kota</p>
-        <p class="project-desc">Miniatur kota otomatis dengan kontrol lampu, gerbang, dan sensor berbasis Arduino — dikendalikan lewat antarmuka web lokal menggunakan serveo.net.</p>
+        <p class="project-name">Rc Car 4WD Dengan Kendali Lewat Smartphone</p>
+        <p class="project-desc"></p>
         <div class="project-tech"><span>Arduino</span><span>C++</span><span>Serveo.net</span><span>HTML</span></div>
       </div>
       <div class="project-arrow">↗</div>
@@ -576,8 +580,8 @@ footer p{font-size:0.78rem;color:var(--muted);font-weight:600}
     <div class="project-card fade-in" data-project="2">
       <div class="project-num">03</div>
       <div class="project-content">
-        <p class="project-name">AI-Assisted Vibe Coding Lab</p>
-        <p class="project-desc">Eksperimen workflow pengembangan hardware yang dipercepat AI — dari debugging ESP32, skema sirkuit, hingga dokumentasi otomatis.</p>
+        <p class="project-name"></p>
+        <p class="project-desc"></p>
         <div class="project-tech"><span>AI Tools</span><span>ESP32</span><span>C++</span><span>GitHub</span></div>
       </div>
       <div class="project-arrow">↗</div>
@@ -586,7 +590,7 @@ footer p{font-size:0.78rem;color:var(--muted);font-weight:600}
 </section>
 
 <section id="contact">
-  <div class="section-header fade-in"><span class="section-label">📬 Contact</span></div>
+  <div class="section-header fade-in"><span class="section-label">📬 Account yang anda bisa kunjungi</span></div>
   <div class="contact-grid">
     <a href="mailto:hilmimulia855@gmail.com" class="contact-card fade-in">
       <span class="contact-arrow">↗</span>
@@ -760,8 +764,16 @@ document.addEventListener('keydown',e=>{
 
 const obs=new IntersectionObserver(e=>{
   e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target)}});
-},{threshold:0.1});
+},{threshold:0,rootMargin:'0px 0px -10% 0px'});
 document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+/* safety net: kalau ada elemen yang masih ke-skip (mis. langsung sudah di viewport saat load,
+   atau observer gagal jalan di browser tertentu), paksa tampil setelah load */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(el=>el.classList.add('visible'));
+  },1200);
+});
 </script>
 </body>
 </html>
