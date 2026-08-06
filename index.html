@@ -645,23 +645,54 @@ function drawChart(){
   ctx.lineWidth = 2;
   ctx.stroke();
 
-  // titik + label nilai di setiap sampel (biar datanya kelihatan angkanya)
+  // titik + label nilai di beberapa sampel (biar datanya kelihatan angkanya)
   ctx.textAlign = 'center';
+  const lastIdx = history.length - 1;
+  const gapEvery = Math.max(2, Math.ceil(history.length/5));
+  // jarak minimum antar-titik (px) sebelum titik terakhir, biar label reguler tidak nempel ke badge nilai sekarang
+  const minGapPx = 46;
+
   history.forEach((v,i)=>{
-    // biar tidak terlalu padat, tampilkan label hanya di beberapa titik + titik terakhir
-    const showLabel = (i === history.length-1) || (i % Math.ceil(history.length/6) === 0);
     const x = xAt(i), y = yAt(v);
+    const isLast = i === lastIdx;
+    const regularSlot = i % gapEvery === 0;
+    const tooCloseToLast = (xAt(lastIdx) - x) < minGapPx;
+    const showRegularLabel = !isLast && regularSlot && !tooCloseToLast;
+
     ctx.beginPath();
-    ctx.arc(x,y, i===history.length-1 ? 3.5 : 2, 0, Math.PI*2);
-    ctx.fillStyle = i===history.length-1 ? '#8fefef' : 'rgba(95,212,214,0.6)';
+    ctx.arc(x,y, isLast ? 3.5 : 2, 0, Math.PI*2);
+    ctx.fillStyle = isLast ? '#8fefef' : 'rgba(95,212,214,0.6)';
     ctx.fill();
-    if(showLabel){
-      ctx.font = i===history.length-1 ? 'bold 11px JetBrains Mono, monospace' : '9px JetBrains Mono, monospace';
-      ctx.fillStyle = i===history.length-1 ? '#e4cd9a' : 'rgba(169,172,196,0.85)';
+
+    if(showRegularLabel){
+      ctx.font = '9px JetBrains Mono, monospace';
+      ctx.fillStyle = 'rgba(169,172,196,0.85)';
       ctx.textBaseline = 'bottom';
       ctx.fillText(v+'%', x, y-7);
     }
   });
+
+  // badge nilai sekarang (titik terakhir) — dikasih latar biar tidak numpuk sama garis/label lain
+  {
+    const x = xAt(lastIdx), y = yAt(history[lastIdx]);
+    const label = history[lastIdx]+'%';
+    ctx.font = 'bold 11px JetBrains Mono, monospace';
+    const tw = ctx.measureText(label).width;
+    const bx = Math.min(x - tw/2 - 6, w - tw - 14);
+    const by = y - 28;
+    ctx.fillStyle = 'rgba(8,11,28,0.9)';
+    ctx.strokeStyle = 'rgba(201,169,98,0.5)';
+    ctx.lineWidth = 1;
+    const bw = tw + 12, bh = 18;
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(bx,by,bw,bh,5) : ctx.rect(bx,by,bw,bh);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#e4cd9a';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, bx+6, by+bh/2+1);
+  }
 
   // x-axis: rentang waktu
   ctx.font = '10px Inter, sans-serif';
