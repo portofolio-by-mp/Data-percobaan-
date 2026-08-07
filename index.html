@@ -320,6 +320,18 @@
 
   ::-webkit-scrollbar{width:6px;}
   ::-webkit-scrollbar-thumb{background:var(--navy-card-border); border-radius:10px;}
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity 0.7s cubic-bezier(.22,.61,.36,1), transform 0.7s cubic-bezier(.22,.61,.36,1);
+    will-change:opacity, transform;
+  }
+  .reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
 </style>
 </head>
 <body>
@@ -340,7 +352,7 @@
 
   <main>
     <!-- LEFT: TANK GAUGE -->
-    <section class="card tank-card">
+    <section class="card tank-card reveal">
       <div class="card-title" style="width:100%;">Level Air Sumur <span id="tankTime">--:--:--</span></div>
       <div class="well-mount"></div>
       <div class="well-shell">
@@ -384,7 +396,7 @@
 
     <!-- RIGHT COLUMN -->
     <div class="right-col">
-      <div class="stat-grid">
+      <div class="stat-grid reveal">
         <div class="stat">
           <div class="icon">&#128167;</div>
           <div class="val" id="statLevel">55<small>%</small></div>
@@ -402,12 +414,12 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <div class="card-title">Grafik Level Air &middot; 30 Menit Terakhir</div>
         <div class="chart-wrap"><canvas id="chart"></canvas></div>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <div class="card-title">Panel Kontrol</div>
         <div class="control-grid">
           <div class="control-item">
@@ -436,7 +448,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <div class="card-title">Log Aktivitas</div>
         <div class="log-list" id="logList"></div>
       </div>
@@ -722,6 +734,28 @@ seedHistory();
 pushLog('Sistem monitoring dimulai', 'info');
 tick();
 setInterval(tick, 4000);
+
+// ===== SCROLL REVEAL =====
+(function(){
+  const items = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const el = entry.target;
+      if(entry.isIntersecting){
+        const delay = el.dataset.revealDelay || 0;
+        clearTimeout(el._revealTimer);
+        el._revealTimer = setTimeout(() => el.classList.add('visible'), delay);
+      } else {
+        clearTimeout(el._revealTimer);
+        el.classList.remove('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach((el, i) => {
+    el.dataset.revealDelay = (i % 6) * 90;
+    observer.observe(el);
+  });
+})();
 </script>
 </body>
 </html>
