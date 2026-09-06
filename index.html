@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>PLTS Monitor</title>
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#0a0e1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -50,6 +50,36 @@
     font-size: 13px;
     backdrop-filter: blur(4px);
   }
+  #tapStart {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: #0a0e1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    color: #fff;
+  }
+  #tapStart img {
+    width: 96px;
+    height: 96px;
+    border-radius: 20px;
+  }
+  #tapStart .btn {
+    background: #1e73ff;
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  #tapStart .hint {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
   #appFrame {
     position: fixed;
     inset: 0;
@@ -74,7 +104,7 @@
 <body>
 
   <div id="splash">
-    <video id="introVideo" autoplay muted playsinline webkit-playsinline></video>
+    <video id="introVideo" autoplay playsinline webkit-playsinline></video>
     <div id="loadingText">Memuat PLTS Monitor…</div>
     <button id="skipBtn">Lewati</button>
   </div>
@@ -101,6 +131,15 @@
       frame.style.display = "block";
       splash.style.display = "none";
     }
+
+    // Coba autoplay BERSUARA dulu (browser mengizinkan ini kalau app sudah
+    // di-install/dibuka dari home screen). Kalau ditolak browser (misal dibuka
+    // lewat link biasa tanpa install), baru fallback ke mute otomatis supaya
+    // video tetap jalan tanpa macet.
+    video.play().catch(function () {
+      video.muted = true;
+      video.play();
+    });
 
     video.addEventListener('ended', openApp);
     skipBtn.addEventListener('click', openApp);
