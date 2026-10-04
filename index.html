@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dev Portfolio Site</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,8 +94,8 @@ h2.big em{font-style:normal;background:linear-gradient(180deg,#9a9aa1,#5c5c63);-
 .badge .ph{width:100%;height:100%;border-radius:7px;background:#000;overflow:hidden}
 .badge .ph img,.photo img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 @media(max-width:820px){
-  #home .wrap{grid-template-columns:1fr}
-  .lan{position:relative;right:auto;top:0;left:50%;height:380px;margin-top:10px}
+  #home .wrap{grid-template-columns:1fr;padding-top:330px}
+  .lan{right:auto;left:50%;top:-130px}
   .scroll{display:none}
 }
 
@@ -222,6 +226,8 @@ footer{text-align:center;padding:60px 20px 40px;font-size:9.5px;color:var(--dim)
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}html{scroll-behavior:auto}.rv{opacity:1;filter:none;transform:none}}
 </style>
 
+</head>
+<body>
 <div class="loader" aria-hidden="true">
   <div class="ic"><span><i data-i="code"></i></span><span><i data-i="user"></i></span><span><i data-i="globe"></i></span></div>
   <h1>Welcome to my<br>Portfolio Website</h1>
@@ -389,7 +395,7 @@ const CERTS = [
   { title:"Sertifikat Kompetensi Keahlian", org:"Nama Lembaga", who:"NAMA LENGKAP ANDA", what:"Rekayasa Perangkat Lunak" }
 ];
 const SOCIALS = [
-  {n:"LinkedIn",h:"@linkedin",i:"in",u:"https://www.linkedin.com/"},
+  {n:"Google Developers",h:"g.dev/hilmistudentdevmalang",i:"code",u:"https://g.dev/hilmistudentdevmalang"},
   {n:"Instagram",h:"@instagram",i:"ig",u:"https://www.instagram.com/"},
   {n:"Youtube",h:"@youtube",i:"yt",u:"https://www.youtube.com/"},
   {n:"Github",h:"@github",i:"gh",u:"https://github.com/"},
@@ -560,5 +566,5 @@ $('#fCm').addEventListener('submit',e=>{e.preventDefault();const n=$('#cName').v
  COMMENTS.push({n,t,img,likes:0});$('#fCm').reset();img='';$('#upl').textContent='Upload Image';drawC();toast('Komentar ditambahkan (hanya tampil di halaman ini).')});
 paintIcons();drawC();
 </script>
-
-</body></html>
+</body>
+</html>
