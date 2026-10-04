@@ -130,7 +130,10 @@ h2.title{font:700 clamp(32px,5.4vw,46px)/1.1 var(--display);margin:0 0 10px;lett
 .tabs button{position:relative;z-index:1;background:none;border:0;padding:10px 6px;font-size:12px;color:var(--mute);cursor:pointer;transition:color .2s}
 .tabs button[aria-selected=true]{color:var(--white)}
 .pane{animation:rise .5s ease both}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,277px));gap:22px;justify-content:start;text-align:left}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;text-align:left}
+.cards.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:1000px){.cards,.cards.c3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.cards,.cards.c3{grid-template-columns:1fr}}
 .card{padding:12px;border-radius:20px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;transition:transform .3s,background .3s}
 .card:hover{transform:translateY(-4px);background:var(--panel-2)}
 .card h3{font:500 14px var(--body);margin:0}
@@ -388,6 +391,24 @@ const PROJECTS = [{
   tech:["Next.js","TypeScript","Tailwind"],
   features:["Kategori artikel","Pencarian cepat","Mode gelap"],
   live:"", repo:""
+},{
+  title:"Website Sekolah", shot:["Website","Sekolah"],
+  desc:"Website profil sekolah dengan halaman jurusan, berita kegiatan, galeri foto, dan formulir pendaftaran siswa baru.",
+  tech:["Laravel","MySQL","Tailwind"],
+  features:["Berita dan galeri","Halaman jurusan","Form pendaftaran"],
+  live:"", repo:""
+},{
+  title:"Absensi QR Code", shot:["Absensi","QR Code"],
+  desc:"Aplikasi absensi siswa dengan pemindaian QR code, rekap kehadiran harian, dan laporan yang bisa diunduh.",
+  tech:["React.js","PHP","MySQL"],
+  features:["Scan QR cepat","Rekap harian","Laporan kehadiran"],
+  live:"", repo:""
+},{
+  title:"Monitoring Suhu IoT", shot:["Monitor","Suhu IoT"],
+  desc:"Sistem pemantauan suhu dan kelembapan ruangan memakai sensor ESP32, lengkap dengan grafik dan notifikasi saat melewati batas.",
+  tech:["JavaScript","HTML","CSS"],
+  features:["Sensor ESP32","Grafik realtime","Notifikasi batas suhu"],
+  live:"", repo:""
 }];
 const CERTS = [
   { title:"Sertifikat Praktik Kerja Industri", org:"Nama Perusahaan", who:"NAMA LENGKAP ANDA", what:"Praktik Kerja Industri" },
@@ -520,7 +541,7 @@ const thumb=(big,p)=>`<div class="thumb ${big?'big':''}"><b>${esc((p?.shot||['Fr
 const certSVG=(c)=>`<svg viewBox="0 0 400 280" style="display:block;width:100%;background:#fff"><rect x="8" y="8" width="384" height="264" fill="none" stroke="#1d6fd6" stroke-width="3"/><path d="M8 8h60L8 70z" fill="#1d6fd6"/><path d="M392 272h-80l80-80z" fill="#1d6fd6"/><rect x="368" y="90" width="24" height="60" fill="#d1303a"/><rect x="8" y="150" width="20" height="50" fill="#9bd22b"/><text x="200" y="70" text-anchor="middle" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#111">${esc(c.org.toUpperCase())}</text><line x1="70" x2="330" y1="86" y2="86" stroke="#111"/><text x="200" y="118" text-anchor="middle" font-family="Georgia,serif" font-size="22" letter-spacing="4" fill="#8a5a22">SERTIFIKAT</text><text x="200" y="146" text-anchor="middle" font-size="8" fill="#333" font-family="Georgia,serif">Diberikan kepada</text><text x="200" y="164" text-anchor="middle" font-size="12" font-weight="700" fill="#111" font-family="Georgia,serif">${esc(c.who)}</text><text x="200" y="190" text-anchor="middle" font-size="8" fill="#333" font-family="Georgia,serif">Sebagai Peserta</text><text x="200" y="204" text-anchor="middle" font-size="10" font-weight="700" fill="#111" font-family="Georgia,serif">${esc(c.what)}</text><text x="200" y="244" text-anchor="middle" font-size="8" fill="#555" font-family="Georgia,serif">Contoh sertifikat. Ganti dengan gambar milikmu.</text></svg>`;
 const views={
  projects:()=>`<div class="cards">${PROJECTS.map((p,i)=>`<article class="card">${thumb(false,p)}<h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p><div class="row"><span>${p.live||p.repo?'Live':'No Link'}</span><button class="pill" data-detail="${i}">Details ${ico('right')}</button></div></article>`).join('')}</div>`,
- certs:()=>CERTS.length?`<div class="cards">${CERTS.map((c,i)=>`<article class="card"><button class="thumb cert" data-cert="${i}" style="cursor:zoom-in" aria-label="Lihat ${esc(c.title)}">${certSVG(c)}</button><h3>${esc(c.title)}</h3><p>${esc(c.org)}</p></article>`).join('')}</div>`:'<div class="empty">Belum ada sertifikat.</div>',
+ certs:()=>CERTS.length?`<div class="cards c3">${CERTS.map((c,i)=>`<article class="card"><button class="thumb cert" data-cert="${i}" style="cursor:zoom-in" aria-label="Lihat ${esc(c.title)}">${certSVG(c)}</button><h3>${esc(c.title)}</h3><p>${esc(c.org)}</p></article>`).join('')}</div>`:'<div class="empty">Belum ada sertifikat.</div>',
  stack:()=>`<div class="techgrid">${STACK.map(([n,s])=>`<div class="tech">${s}<span>${n}</span></div>`).join('')}</div>`
 };
 const keys=['projects','certs','stack'];
